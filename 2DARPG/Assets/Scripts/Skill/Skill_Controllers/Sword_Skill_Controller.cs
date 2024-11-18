@@ -13,10 +13,11 @@ public class Sword_Skill_Controller : MonoBehaviour
     private bool canRotate = true;
     private bool isReturning;
 
-    public float bounceSpeed;
-    public bool isBouncing = true;
-    public int amountOfBounce = 4;
-    public List<Transform> enemyTarget;
+    [Header("Bounce info")]
+    [SerializeField] private float bounceSpeed;
+    private bool isBouncing;
+    private int amountOfBounce;
+    private List<Transform> enemyTarget;
     private int targetIndex;
 
     private void Awake()
@@ -35,6 +36,14 @@ public class Sword_Skill_Controller : MonoBehaviour
         anim.SetBool("Rotation", true);
     }
 
+    public void SetupBounce(bool _isBouncing, int _amountOfBounces)
+    {
+        isBouncing = _isBouncing;
+        amountOfBounce = _amountOfBounces;
+
+        enemyTarget = new List<Transform>();
+    }
+
     public void ReturnSword()
     {
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -45,7 +54,7 @@ public class Sword_Skill_Controller : MonoBehaviour
 
     private void Update()
     {
-        if(canRotate)
+        if (canRotate)
             transform.right = rb.velocity;
 
         if (isReturning)
@@ -57,24 +66,30 @@ public class Sword_Skill_Controller : MonoBehaviour
 
         }
 
-        if (isBouncing && enemyTarget.Count > 0)
+        BounceLogin();
+    }
+
+    private void BounceLogin()
+    {
+        if (!isBouncing || enemyTarget.Count <= 0)
         {
-            transform.position = Vector2.MoveTowards(transform.position, enemyTarget[targetIndex].position, bounceSpeed * Time.deltaTime);
+            return;
+        }
+        transform.position = Vector2.MoveTowards(transform.position, enemyTarget[targetIndex].position, bounceSpeed * Time.deltaTime);
 
-            if (Vector2.Distance(transform.position, enemyTarget[targetIndex].position) < .1f)
+        if (Vector2.Distance(transform.position, enemyTarget[targetIndex].position) < .1f)
+        {
+            targetIndex++;
+            amountOfBounce--;
+
+            if (amountOfBounce <= 0)
             {
-                targetIndex++;
-                amountOfBounce--;
-
-                if (amountOfBounce <= 0)
-                {
-                    isBouncing = false;
-                    isReturning = true;
-                }
-
-                if (targetIndex >= enemyTarget.Count)
-                    targetIndex = 0;
+                isBouncing = false;
+                isReturning = true;
             }
+
+            if (targetIndex >= enemyTarget.Count)
+                targetIndex = 0;
         }
     }
 
