@@ -17,6 +17,7 @@ public class Enemy : Entity
     public float moveSpeed;
     public float idleTime;//巡逻停顿时长
     public float battleTime;//战斗状态时长
+    private float defaulMoveSpeed;
 
     [Header("Attack info")]
     public float attackDistance;
@@ -29,6 +30,8 @@ public class Enemy : Entity
     {
         base.Awake();
         stateMachine = new EnemyStateMachine();
+
+        defaulMoveSpeed = moveSpeed;
     }
 
     protected override void Update()
@@ -38,6 +41,31 @@ public class Enemy : Entity
         stateMachine.currentState.Update();
     }
 
+    public virtual void FreezeTime(bool _timeFrozen)
+    {
+        if (_timeFrozen)
+        {
+            moveSpeed = 0;
+            anim.speed = 0;
+        }
+        else
+        {
+            moveSpeed = defaulMoveSpeed;
+            anim.speed = 1;
+        }
+    }
+
+    protected virtual IEnumerator FreezeTimerFor(float _seconds)
+    {
+        FreezeTime(true);
+
+        yield return new WaitForSeconds(_seconds);
+
+        FreezeTime(false);
+    }
+
+
+    #region Counter Attack Window
     public virtual void OpenCounterImageWindow()
     {
         canBeStunned = true;
@@ -49,6 +77,7 @@ public class Enemy : Entity
         canBeStunned = false;
         counterImage.SetActive(false);
     }
+    #endregion
 
     public virtual bool CanBeStunned()
     {
