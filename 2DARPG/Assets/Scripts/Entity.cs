@@ -25,6 +25,7 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }//动画树
     public Rigidbody2D rb { get; private set; }//人物刚体
     public EntityFX fx { get; private set; }
+    public SpriteRenderer sr { get; private set; }
     #endregion
 
     protected virtual void Awake()
@@ -34,9 +35,10 @@ public class Entity : MonoBehaviour
 
     protected virtual void Start()
     {
-        fx = GetComponent<EntityFX>();
+        sr = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        fx = GetComponent<EntityFX>();
     }
 
     protected virtual void Update()
@@ -115,4 +117,12 @@ public class Entity : MonoBehaviour
         }
     }
     #endregion
+
+    public void MakeTransprent(bool _transprent)
+    {
+        if (_transprent)
+            sr.color = Color.clear;
+        else
+            sr.color = Color.white;
+    }
 }
