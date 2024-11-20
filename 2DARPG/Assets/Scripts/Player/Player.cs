@@ -78,6 +78,9 @@ public class Player: Entity
         stateMachine.currentState.Update();//状态机的update通过player的update来执行
 
         CheckForDashInput();//执行冲刺按下检测
+
+        if (Input.GetKeyDown(KeyCode.F))
+            skill.crystal.UseSkill();
     }
 
     public void AssignNewSword(GameObject _newSword)
