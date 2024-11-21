@@ -80,7 +80,7 @@ public class Player: Entity
         CheckForDashInput();//Ö´ÐÐ³å´Ì°´ÏÂ¼ì²â
 
         if (Input.GetKeyDown(KeyCode.F))
-            skill.crystal.UseSkill();
+            skill.crystal.CanUseSkill();
     }
 
     public void AssignNewSword(GameObject _newSword)
