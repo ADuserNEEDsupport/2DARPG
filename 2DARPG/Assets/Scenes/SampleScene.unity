@@ -1712,7 +1712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength:
-    baseValue: 5
+    baseValue: 0
     modifiers: 
   agility:
     baseValue: 0
@@ -1723,6 +1723,15 @@ MonoBehaviour:
   vitality:
     baseValue: 0
     modifiers: 
+  damage:
+    baseValue: 10
+    modifiers: 
+  critChance:
+    baseValue: 99
+    modifiers: 
+  critPower:
+    baseValue: 0
+    modifiers: 
   maxHealth:
     baseValue: 100
     modifiers: 
@@ -1731,9 +1740,6 @@ MonoBehaviour:
     modifiers: 
   evasion:
     baseValue: 0
-    modifiers: 
-  damage:
-    baseValue: 5
     modifiers: 
   currentHealth: 0
 --- !u!1 &1266372696
@@ -4285,7 +4291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength:
-    baseValue: 7
+    baseValue: 0
     modifiers: 
   agility:
     baseValue: 0
@@ -4294,6 +4300,15 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   vitality:
+    baseValue: 0
+    modifiers: 
+  damage:
+    baseValue: 10
+    modifiers: 
+  critChance:
+    baseValue: 99
+    modifiers: 
+  critPower:
     baseValue: 0
     modifiers: 
   maxHealth:
@@ -4305,10 +4320,7 @@ MonoBehaviour:
   evasion:
     baseValue: 0
     modifiers: 
-  damage:
-    baseValue: 5
-    modifiers: 
-  currentHealth: 0
+  currentHealth: 1000
 --- !u!70 &1677894455
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
