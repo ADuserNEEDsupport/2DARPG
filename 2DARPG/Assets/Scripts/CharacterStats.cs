@@ -17,6 +17,16 @@ public class CharacterStats : MonoBehaviour
     public Stat maxHealth;
     public Stat armor;
     public Stat evasion;
+    public Stat magicResistance;
+
+    [Header("Magic stats")]
+    public Stat fireDamage;
+    public Stat iceDamage;
+    public Stat lightingDamage;
+
+    public bool isIgnited;
+    public bool isChilled;
+    public bool isShocked;
 
 
 
@@ -42,14 +52,46 @@ public class CharacterStats : MonoBehaviour
             Debug.Log("最终伤害" + totalDamage);
         }
 
-        totalDamage -= _targetStats.armor.GetValue();
+        
         totalDamage = CheckTargetArmor(_targetStats, totalDamage);
+        //_targetStats.TakeDamage(totalDamage);
+        DoMagicalDamage(_targetStats);
+    }
+
+    public virtual void DoMagicalDamage(CharacterStats _targetStats)
+    {
+        int _fireDamage = fireDamage.GetValue();
+        int _iceDamage = iceDamage.GetValue();
+        int _lightingDamage = lightingDamage.GetValue();
+
+        int totalMagicalDamage = _fireDamage + _iceDamage + _lightingDamage + intelligence.GetValue();
+        totalMagicalDamage = CheckTargetResistance(_targetStats, totalMagicalDamage);
+
+        _targetStats.TakeDamage(totalMagicalDamage);
+    }
+
+    private static int CheckTargetResistance(CharacterStats _targetStats, int totalMagicalDamage)
+    {
+        totalMagicalDamage -= _targetStats.magicResistance.GetValue() + (_targetStats.intelligence.GetValue() * 3);
+        totalMagicalDamage = Mathf.Clamp(totalMagicalDamage, 0, int.MaxValue);
+        return totalMagicalDamage;
+    }
+
+    public void ApplyAliments(bool _ignite, bool _chill, bool _shock)
+    {
+        if (isChilled || isChilled || isShocked)
+            return;//如果已经有一种状态，就直接返回
+
+        isChilled = _chill;
+        isIgnited = _ignite;
+        isShocked = _shock;
     }
 
 
     public virtual void TakeDamage(int _damage)
     {
         currentHealth -= _damage;
+        Debug.Log(_damage);
 
         if (currentHealth <= 0)
             Die();
@@ -72,8 +114,8 @@ public class CharacterStats : MonoBehaviour
     }
     private int CheckTargetArmor(CharacterStats _targetStats, int totalDamage)
     {
+        totalDamage -= _targetStats.armor.GetValue();
         totalDamage = Mathf.Clamp(totalDamage, 0, int.MaxValue);
-        _targetStats.TakeDamage(totalDamage);
         return totalDamage;
     }
 
